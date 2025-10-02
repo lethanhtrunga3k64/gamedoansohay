@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trò Chơi Đoán Số</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .game-info {
+            margin-bottom: 20px;
+        }
+
+        .info-box {
+            display: flex;
+            justify-content: space-between;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .input-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .number-inputs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .number-input {
+            width: 80px;
+            height: 80px;
+            font-size: 2em;
+            text-align: center;
+            border: 3px solid #ddd;
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .number-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .guess-button, .reset-button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 0 10px;
+        }
+
+        .guess-button {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .guess-button:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .reset-button {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .reset-button:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+        }
+
+        .results-section {
+            margin-bottom: 30px;
+        }
+
+        .results-section h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .results-container {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .guess-item {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 5px solid #667eea;
+        }
+
+        .guess-numbers {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .guess-result {
+            color: #666;
+        }
+
+        .correct {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .wrong-position {
+            color: #FF9800;
+            font-weight: bold;
+        }
+
+        .instructions {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .instructions h3 {
+            margin-bottom: 10px;
+            color: #1976d2;
+        }
+
+        .instructions ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .instructions li {
+            padding: 5px 0;
+            color: #555;
+        }
+
+        .win-message {
+            background: #4CAF50;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .number-input {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5em;
+            }
+            
+            .guess-button, .reset-button {
+                padding: 12px 20px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 TRÒ CHƠI ĐOÁN SỐ 🎮</h1>
+            <p class="subtitle">Đoán 3 số bí mật từ 0-9 (không trùng nhau)</p>
+        </header>
+
+        <div class="game-info">
+            <div class="info-box">
+                <span id="attempts">Lượt: 0/10</span>
+                <span id="timer">Thời gian: 0s</span>
+            </div>
+        </div>
+
+        <div class="input-section">
+            <div class="number-inputs">
+                <input type="number" min="0" max="9" class="number-input" id="num1" maxlength="1">
+                <input type="number" min="0" max="9" class="number-input" id="num2" maxlength="1">
+                <input type="number" min="0" max="9" class="number-input" id="num3" maxlength="1">
+            </div>
+            <button id="guess-btn" class="guess-button">ĐOÁN</button>
+            <button id="reset-btn" class="reset-button">CHƠI LẠI</button>
+        </div>
+
+        <div class="results-section">
+            <h3>KẾT QUẢ:</h3>
+            <div id="results" class="results-container"></div>
+        </div>
+
+        <div class="instructions">
+            <h3>📋 Hướng dẫn:</h3>
+            <ul>
+                <li>Máy đã tạo 3 số từ 0-9 (không trùng nhau)</li>
+                <li>Bạn có 10 lượt để đoán đúng cả 3 số</li>
+                <li>✅ Số đúng vị trí: Số đúng và ở đúng vị trí</li>
+                <li>🔄 Số đúng sai vị trí: Số đúng nhưng ở sai vị trí</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        class NumberGuessGame {
+            constructor() {
+                this.secretNumbers = [];
+                this.attempts = 0;
+                this.maxAttempts = 10;
+                this.startTime = 0;
+                this.timerInterval = null;
+                this.isGameOver = false;
+                
+                this.initializeElements();
+                this.startNewGame();
+            }
+
+            initializeElements() {
+                this.numInputs = [
+                    document.getElementById('num1'),
+                    document.getElementById('num2'),
+                    document.getElementById('num3')
+                ];
+                this.guessBtn = document.getElementById('guess-btn');
+                this.resetBtn = document.getElementById('reset-btn');
+                this.attemptsElement = document.getElementById('attempts');
+                this.timerElement = document.getElementById('timer');
+                this.resultsContainer = document.getElementById('results');
+
+                this.guessBtn.addEventListener('click', () => this.makeGuess());
+                this.resetBtn.addEventListener('click', () => this.startNewGame());
+                
+                this.numInputs.forEach((input, index) => {
+                    input.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            if (index < 2) {
+                                this.numInputs[index + 1].focus();
+                            } else {
+                                this.makeGuess();
+                            }
+                        }
+                    });
+                });
+
+                this.numInputs.forEach((input, index) => {
+                    input.addEventListener('input', (e) => {
+                        if (e.target.value.length === 1 && index < 2) {
+                            this.numInputs[index + 1].focus();
+                        }
+                    });
+                });
+            }
+
+            generateSecretNumbers() {
+                const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+                for (let i = numbers.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
+                }
+                return numbers.slice(0, 3);
+            }
+
+            startNewGame() {
+                this.secretNumbers = this.generateSecretNumbers();
+                this.attempts = 0;
+                this.isGameOver = false;
+                this.startTime = Date.now();
+                
+                this.attemptsElement.textContent = `Lượt: 0/${this.maxAttempts}`;
+                this.resultsContainer.innerHTML = '';
+                
+                this.numInputs.forEach(input => {
+                    input.value = '';
+                    input.disabled = false;
+                });
+                
+                this.numInputs[0].focus();
+                this.guessBtn.disabled = false;
+                
+                this.startTimer();
+                
+                console.log('Số bí mật (chỉ để test):', this.secretNumbers);
+            }
+
+            startTimer() {
+                if (this.timerInterval) {
+                    clearInterval(this.timerInterval);
+                }
+                
+                this.timerInterval = setInterval(() => {
+                    const elapsed = Math.floor((Date.now() - this.startTime) / 1000);
+                    this.timerElement.textContent = `Thời gian: ${elapsed}s`;
+                }, 1000);
+            }
+
+            makeGuess() {
+                if (this.isGameOver) return;
+
+                const guess = this.numInputs.map(input => parseInt(input.value));
+                
+                if (guess.some(num => isNaN(num) || num < 0 || num > 9)) {
+                    alert('Vui lòng nhập số từ 0-9 cho cả 3 ô!');
+                    return;
+                }
+
+                if (new Set(guess).size !== 3) {
+                    alert('Các số không được trùng nhau!');
+                    return;
+                }
+
+                this.attempts++;
+                this.attemptsElement.textContent = `Lượt: ${this.attempts}/${this.maxAttempts}`;
+
+                const result = this.checkGuess(guess);
+                this.displayResult(guess, result);
+
+                this.numInputs.forEach(input => input.value = '');
+                this.numInputs[0].focus();
+
+                if (result.correctPosition === 3) {
+                    this.endGame(true);
+                } else if (this.attempts >= this.maxAttempts) {
+                    this.endGame(false);
+                }
+            }
+
+            checkGuess(guess) {
+                let correctPosition = 0;
+                let correctNumber = 0;
+
+                for (let i = 0; i < 3; i++) {
+                    if (guess[i] === this.secretNumbers[i]) {
+                        correctPosition++;
+                    }
+                }
+
+                for (let i = 0; i < 3; i++) {
+                    if (this.secretNumbers.includes(guess[i]) && guess[i] !== this.secretNumbers[i]) {
+                        correctNumber++;
+                    }
+                }
+
+                return { correctPosition, correctNumber };
+            }
+
+            displayResult(guess, result) {
+                const guessElement = document.createElement('div');
+                guessElement.className = 'guess-item';
+                
+                guessElement.innerHTML = `
+                    <div class="guess-numbers">${guess.join(' - ')}</div>
+                    <div class="guess-result">
+                        ✅ <span class="correct">${result.correctPosition} số đúng vị trí</span> | 
+                        🔄 <span class="wrong-position">${result.correctNumber} số đúng sai vị trí</span>
+                    </div>
+                `;
+                
+                this.resultsContainer.prepend(guessElement);
+            }
+
+            endGame(isWin) {
+                this.isGameOver = true;
+                clearInterval(this.timerInterval);
+
+                this.numInputs.forEach(input => input.disabled = true);
+                this.guessBtn.disabled = true;
+
+                const message = document.createElement('div');
+                message.className = 'win-message';
+                
+                if (isWin) {
+                    message.innerHTML = `🎉 CHÚC MỪNG! Bạn đã chiến thắng sau ${this.attempts} lượt!`;
+                    message.style.background = '#4CAF50';
+                } else {
+                    message.innerHTML = `💀 HẾT LƯỢT! Số đúng là: ${this.secretNumbers.join(' - ')}`;
+                    message.style.background = '#ff6b6b';
+                }
+                
+                this.resultsContainer.prepend(message);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new NumberGuessGame();
+        });
+    </script>
+</body>
+</html>v
