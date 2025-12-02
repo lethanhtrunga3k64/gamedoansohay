@@ -2,178 +2,261 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Game Đoán Số Pro - 3 Chế Độ</title>
+  <title>NumberMind | Game Đoán Số Thông Minh</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* CSS sẽ được đưa vào đây để giữ trong một file */
+  </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Header -->
+  <div class="app-container">
+    
+    <!-- Header với logo và thông tin game -->
     <header class="game-header">
-      <h1><i class="fas fa-gamepad"></i> GAME ĐOÁN SỐ PRO</h1>
-      <div class="game-stats">
-        <div class="stat-box">
-          <span class="stat-label">ĐIỂM</span>
-          <span id="score" class="stat-value">0</span>
+      <div class="header-content">
+        <div class="logo">
+          <i class="fas fa-brain"></i>
+          <h1>NumberMind</h1>
+          <span class="tagline">Challenge Your Logic</span>
         </div>
-        <div class="stat-box">
-          <span class="stat-label">CẤP ĐỘ</span>
-          <span id="level" class="stat-value">Dễ</span>
-        </div>
-        <div class="stat-box">
-          <span class="stat-label">HIGHSCORE</span>
-          <span id="highscore" class="stat-value">0</span>
+        
+        <div class="player-stats">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-trophy"></i>
+            </div>
+            <div class="stat-info">
+              <span class="stat-label">HIGHSCORE</span>
+              <span id="highscore" class="stat-value">0</span>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-coins"></i>
+            </div>
+            <div class="stat-info">
+              <span class="stat-label">SCORE</span>
+              <span id="score" class="stat-value">0</span>
+            </div>
+          </div>
+          
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-layer-group"></i>
+            </div>
+            <div class="stat-info">
+              <span class="stat-label">LEVEL</span>
+              <span id="level" class="stat-value">Easy</span>
+            </div>
+          </div>
         </div>
       </div>
     </header>
 
-    <!-- Mode Selection -->
-    <div class="mode-selection">
-      <h2><i class="fas fa-sliders-h"></i> CHỌN CHẾ ĐỘ CHƠI</h2>
-      <div class="mode-buttons">
-        <button class="mode-btn active" data-mode="easy" data-length="5">
-          <i class="fas fa-baby"></i>
-          <span>DỄ (5 số)</span>
-          <small>10 lượt đoán</small>
-        </button>
-        <button class="mode-btn" data-mode="normal" data-length="6">
-          <i class="fas fa-user"></i>
-          <span>THƯỜNG (6 số)</span>
-          <small>12 lượt đoán</small>
-        </button>
-        <button class="mode-btn" data-mode="hard" data-length="7">
-          <i class="fas fa-fire"></i>
-          <span>KHÓ (7 số)</span>
-          <small>15 lượt đoán</small>
-        </button>
-      </div>
-    </div>
-
-    <!-- Game Area -->
-    <main class="game-area">
-      <!-- Game Info -->
-      <div class="game-info">
-        <div class="info-card">
-          <h3><i class="fas fa-info-circle"></i> THÔNG TIN VÁN CHƠI</h3>
-          <div class="info-grid">
-            <div class="info-item">
-              <span class="info-label">Độ dài số:</span>
-              <span id="currentLength" class="info-value">5</span>
+    <!-- Main Game Container -->
+    <main class="game-container">
+      <div class="game-grid">
+        
+        <!-- Left Panel: Game Controls -->
+        <div class="left-panel">
+          <div class="mode-selector">
+            <h2><i class="fas fa-gamepad"></i> Game Mode</h2>
+            <div class="mode-grid">
+              <button class="mode-card active" data-mode="easy">
+                <div class="mode-icon">
+                  <i class="fas fa-seedling"></i>
+                </div>
+                <div class="mode-content">
+                  <h3>Beginner</h3>
+                  <p>5 numbers • 10 attempts</p>
+                  <div class="difficulty-badge easy">Easy</div>
+                </div>
+              </button>
+              
+              <button class="mode-card" data-mode="normal">
+                <div class="mode-icon">
+                  <i class="fas fa-user"></i>
+                </div>
+                <div class="mode-content">
+                  <h3>Advanced</h3>
+                  <p>6 numbers • 12 attempts</p>
+                  <div class="difficulty-badge normal">Medium</div>
+                </div>
+              </button>
+              
+              <button class="mode-card" data-mode="hard">
+                <div class="mode-icon">
+                  <i class="fas fa-fire"></i>
+                </div>
+                <div class="mode-content">
+                  <h3>Expert</h3>
+                  <p>7 numbers • 15 attempts</p>
+                  <div class="difficulty-badge hard">Hard</div>
+                </div>
+              </button>
             </div>
-            <div class="info-item">
-              <span class="info-label">Lượt đoán:</span>
-              <span id="attemptInfo" class="info-value">0/10</span>
-            </div>
-            <div class="info-item">
-              <span class="info-label">Thời gian:</span>
-              <span id="timer" class="info-value">00:00</span>
-            </div>
-            <div class="info-item">
-              <span class="info-label">Điểm hiện tại:</span>
-              <span id="currentScore" class="info-value">0</span>
+          </div>
+          
+          <div class="game-info-card">
+            <h3><i class="fas fa-chart-line"></i> Game Stats</h3>
+            <div class="stats-grid">
+              <div class="stat-item">
+                <span class="stat-title">Numbers</span>
+                <span id="currentLength" class="stat-data">5</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-title">Attempts</span>
+                <span id="attemptInfo" class="stat-data">0/10</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-title">Time</span>
+                <span id="timer" class="stat-data">00:00</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-title">Points</span>
+                <span id="currentScore" class="stat-data">0</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
-      <!-- Symbol Legend -->
-      <div class="symbol-legend">
-        <div class="legend-item correct">
-          <span class="legend-icon"><i class="fas fa-check"></i></span>
-          <span class="legend-text">Đúng số & vị trí</span>
+        
+        <!-- Center Panel: Game Play -->
+        <div class="center-panel">
+          <div class="game-header-section">
+            <h2><i class="fas fa-crosshairs"></i> Make Your Guess</h2>
+            <div class="legend">
+              <div class="legend-item">
+                <span class="legend-dot correct"></span>
+                <span>Correct</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-dot partial"></span>
+                <span>Wrong Position</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-dot wrong"></span>
+                <span>Wrong</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="guess-section">
+            <form id="guessForm" autocomplete="off">
+              <div class="input-grid" id="inputs">
+                <!-- Inputs will be generated here -->
+              </div>
+              
+              <div id="error" class="error-message"></div>
+              
+              <div class="action-buttons">
+                <button type="submit" class="btn-primary">
+                  <i class="fas fa-paper-plane"></i>
+                  Submit Guess
+                </button>
+                <button type="button" id="hintBtn" class="btn-secondary">
+                  <i class="fas fa-lightbulb"></i>
+                  Hint <span id="hintCount">(3)</span>
+                </button>
+                <button type="button" id="restartBtn" class="btn-outline">
+                  <i class="fas fa-redo"></i>
+                  Restart
+                </button>
+              </div>
+            </form>
+          </div>
+          
+          <div class="history-section">
+            <h3><i class="fas fa-history"></i> Guess History</h3>
+            <div id="history" class="history-list">
+              <!-- History items will be added here -->
+            </div>
+          </div>
+          
+          <div class="game-result" id="endMessage" style="display: none;">
+            <!-- Game result messages will be shown here -->
+          </div>
+          
+          <div id="playAgain" class="play-again-section" style="display: none;">
+            <button id="playAgainBtn" class="btn-success">
+              <i class="fas fa-play-circle"></i>
+              Play Again
+            </button>
+          </div>
         </div>
-        <div class="legend-item partial">
-          <span class="legend-icon"><i class="fas fa-exchange-alt"></i></span>
-          <span class="legend-text">Đúng số, sai vị trí</span>
-        </div>
-        <div class="legend-item wrong">
-          <span class="legend-icon"><i class="fas fa-times"></i></span>
-          <span class="legend-text">Sai hoàn toàn</span>
-        </div>
-      </div>
-
-      <!-- Input Form -->
-      <form id="guessForm" autocomplete="off">
-        <div class="guess-inputs" id="inputs"></div>
-        <div class="form-actions">
-          <button type="submit" class="btn btn-submit">
-            <i class="fas fa-paper-plane"></i> ĐOÁN NGAY
-          </button>
-          <button type="button" id="hintBtn" class="btn btn-hint">
-            <i class="fas fa-lightbulb"></i> GỢI Ý (3)
-          </button>
-          <button type="button" id="restartBtn" class="btn btn-restart">
-            <i class="fas fa-redo"></i> CHƠI LẠI
-          </button>
-        </div>
-      </form>
-
-      <!-- Error Message -->
-      <div id="error" class="error-message"></div>
-
-      <!-- Game Results -->
-      <div class="game-results">
-        <div id="endMessage" class="end-message"></div>
-        <div id="playAgain" class="play-again-container" style="display: none;">
-          <button id="playAgainBtn" class="btn btn-play-again">
-            <i class="fas fa-play-circle"></i> CHƠI VÁN MỚI
-          </button>
-        </div>
-      </div>
-
-      <!-- History -->
-      <div class="history-section">
-        <h3><i class="fas fa-history"></i> LỊCH SỬ ĐOÁN</h3>
-        <div id="history" class="history-list"></div>
-      </div>
-
-      <!-- Leaderboard -->
-      <div class="leaderboard-section">
-        <h3><i class="fas fa-trophy"></i> BẢNG XẾP HẠNG</h3>
-        <div class="leaderboard-tabs">
-          <button class="tab-btn active" data-tab="easy">Dễ</button>
-          <button class="tab-btn" data-tab="normal">Thường</button>
-          <button class="tab-btn" data-tab="hard">Khó</button>
-        </div>
-        <div id="leaderboard" class="leaderboard-list">
-          <div class="leaderboard-placeholder">
-            <i class="fas fa-chart-line"></i>
-            <p>Chưa có dữ liệu xếp hạng</p>
+        
+        <!-- Right Panel: Leaderboard & Info -->
+        <div class="right-panel">
+          <div class="leaderboard-card">
+            <div class="card-header">
+              <h3><i class="fas fa-crown"></i> Leaderboard</h3>
+              <div class="leaderboard-tabs">
+                <button class="tab-btn active" data-tab="easy">Easy</button>
+                <button class="tab-btn" data-tab="normal">Med</button>
+                <button class="tab-btn" data-tab="hard">Hard</button>
+              </div>
+            </div>
+            
+            <div id="leaderboard" class="leaderboard-list">
+              <div class="empty-state">
+                <i class="fas fa-trophy"></i>
+                <p>No records yet</p>
+                <small>Complete a game to appear here!</small>
+              </div>
+            </div>
+          </div>
+          
+          <div class="instructions-card">
+            <h3><i class="fas fa-graduation-cap"></i> How to Play</h3>
+            <div class="instruction-steps">
+              <div class="step">
+                <div class="step-number">1</div>
+                <p>Guess the <strong>secret number</strong> with unique digits</p>
+              </div>
+              <div class="step">
+                <div class="step-number">2</div>
+                <p>First digit cannot be <strong>0</strong></p>
+              </div>
+              <div class="step">
+                <div class="step-number">3</div>
+                <p>Use feedback to deduce the number</p>
+              </div>
+              <div class="step">
+                <div class="step-number">4</div>
+                <p>Win by guessing correctly before attempts run out</p>
+              </div>
+            </div>
+            
+            <div class="tip-box">
+              <i class="fas fa-lightbulb"></i>
+              <p><strong>Pro tip:</strong> Start by testing digits 1-4 in first position</p>
+            </div>
           </div>
         </div>
       </div>
     </main>
-
-    <!-- How to Play -->
-    <div class="how-to-play">
-      <h3><i class="fas fa-graduation-cap"></i> HƯỚNG DẪN CHƠI</h3>
-      <div class="instructions">
-        <div class="instruction-step">
-          <span class="step-number">1</span>
-          <p>Chọn chế độ chơi: <strong>Dễ (5 số)</strong>, <strong>Thường (6 số)</strong> hoặc <strong>Khó (7 số)</strong></p>
-        </div>
-        <div class="instruction-step">
-          <span class="step-number">2</span>
-          <p>Nhập dự đoán vào các ô và bấm <strong>ĐOÁN NGAY</strong></p>
-        </div>
-        <div class="instruction-step">
-          <span class="step-number">3</span>
-          <p>Dựa vào ký hiệu để suy luận số bí mật</p>
-        </div>
-        <div class="instruction-step">
-          <span class="step-number">4</span>
-          <p>Cố gắng đoán đúng trong số lượt cho phép để được điểm cao</p>
-        </div>
-        <div class="instruction-step">
-          <span class="step-number">5</span>
-          <p>Điểm được tính dựa trên độ khó, thời gian và số lượt đoán</p>
-        </div>
+    
+    <!-- Footer -->
+    <footer class="game-footer">
+      <p>Made with <i class="fas fa-heart"></i> by NumberMind • Challenge your logic skills</p>
+      <div class="footer-links">
+        <button id="soundToggle" class="footer-btn">
+          <i class="fas fa-volume-up"></i> Sound
+        </button>
+        <button id="themeToggle" class="footer-btn">
+          <i class="fas fa-moon"></i> Dark Mode
+        </button>
       </div>
-    </div>
+    </footer>
   </div>
 
-  <script src="game.js"></script>
+  <script>
+    // JavaScript sẽ được thêm vào đây
+    // Sử dụng code game.js đã được cung cấp trước đó
+  </script>
 </body>
 </html>
