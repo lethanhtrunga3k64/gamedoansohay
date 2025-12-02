@@ -2,399 +2,178 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Game Đoán Số Cute 5 Chữ Số</title>
+  <title>Game Đoán Số Pro - 3 Chế Độ</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Google Fonts: Fredoka & Quicksand -->
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Fredoka', 'Quicksand', Arial, sans-serif;
-      background: linear-gradient(135deg, #f9d423 0%, #ff4e50 100%);
-      min-height: 100vh;
-      margin: 0;
-    }
-    .container {
-      max-width: 440px;
-      margin: 40px auto;
-      background: #fff;
-      border-radius: 30px;
-      box-shadow: 0 10px 32px rgba(0,0,0,0.13);
-      padding: 32px 18px 22px 18px;
-      position: relative;
-      animation: fadeIn 1s;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(30px);}
-      to { opacity: 1; transform: translateY(0);}
-    }
-    h2 {
-      text-align: center;
-      font-family: 'Fredoka', 'Quicksand', Arial, sans-serif;
-      background: linear-gradient(90deg,#ff512f 20%,#dd2476 80%);
-      color: transparent;
-      background-clip: text;
-      -webkit-background-clip: text;
-      font-size: 2.3em;
-      font-weight: 600;
-      margin-bottom: 10px;
-      letter-spacing: 2px;
-    }
-    .desc {
-      color: #555;
-      font-size: 1.08em;
-      text-align: center;
-      margin-bottom: 8px;
-      font-family: 'Quicksand', 'Fredoka', Arial, sans-serif;
-      font-weight: 500;
-    }
-    .symbol-explain {
-      background: #fce4ec;
-      border-radius: 12px;
-      padding: 10px 14px;
-      margin-bottom: 14px;
-      text-align: left;
-      font-size: 1.03em;
-      box-shadow: 0 2px 8px #f6abb680;
-      font-family: 'Quicksand', 'Fredoka', Arial, sans-serif;
-    }
-    #guessForm {
-      margin-bottom: 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .guess-box {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      margin-bottom: 8px;
-    }
-    .guess-input {
-      width: 54px;
-      height: 54px;
-      border-radius: 18px;
-      border: 2.5px solid #ffb6b9;
-      text-align: center;
-      font-size: 1.5em;
-      font-weight: 600;
-      background: #fff7fa;
-      box-shadow: 0 2px 8px #ffb6b933;
-      transition: border 0.2s, background 0.18s;
-      font-family: 'Fredoka', 'Quicksand', Arial, sans-serif;
-      color: #ff4e50;
-    }
-    .guess-input:focus {
-      border: 2.5px solid #dd2476;
-      outline: none;
-      background: #fff0f6;
-      color: #d32f2f;
-    }
-    .btn {
-      padding: 12px 32px;
-      font-size: 1.13em;
-      border-radius: 18px;
-      border: none;
-      background: linear-gradient(90deg,#ffb6b9,#dd2476);
-      color: #fff;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: 'Fredoka', 'Quicksand', Arial, sans-serif;
-      box-shadow: 0 4px 16px #ffb6b966;
-      transition: background 0.3s, transform 0.2s;
-      margin: 0 auto;
-      letter-spacing: 1px;
-      margin-top: 8px;
-    }
-    .btn:active {
-      transform: scale(0.97);
-    }
-    .btn:disabled {
-      background: #ccc;
-      color: #888;
-      cursor: not-allowed;
-      box-shadow: none;
-    }
-    #error {
-      color: #e53935;
-      text-align: center;
-      margin-top: 8px;
-      min-height: 20px;
-      font-size: 1.09em;
-      font-family: 'Quicksand', 'Fredoka', Arial, sans-serif;
-      font-weight: 500;
-    }
-    .history {
-      margin-top: 18px;
-      border-top: 2px dashed #ffb6b944;
-      padding-top: 12px;
-    }
-    .result-row {
-      display: flex;
-      align-items: center;
-      gap: 13px;
-      margin-bottom: 7px;
-      font-size: 1.15em;
-      background: #fce4ec;
-      border-radius: 13px;
-      padding: 8px 18px;
-      box-shadow: 0 1px 6px #f098191a;
-      transition: box-shadow 0.2s, background 0.2s;
-      font-family: 'Fredoka', 'Quicksand', Arial, sans-serif;
-    }
-    .result-row:hover {
-      box-shadow: 0 2px 20px #dd247640;
-      background: #fff3f7;
-    }
-    .symbol {
-      font-size: 1.8em;
-      font-weight: bold;
-      margin-right: 2px;
-      transition: transform 0.2s;
-      cursor: pointer;
-      filter: drop-shadow(0 3px 3px #ffb6b980);
-      font-family: 'Fredoka', 'Quicksand', Arial, sans-serif;
-      text-shadow: 0 2px 8px #fff0f7;
-    }
-    .symbol:hover {
-      transform: scale(1.19) rotate(-6deg);
-      filter: drop-shadow(0 5px 7px #ffb6b9cc);
-      text-shadow: 0 3px 14px #ffe0e7;
-    }
-    .end-message {
-      font-size: 1.27em;
-      text-align: center;
-      margin-top: 18px;
-      padding: 14px 0;
-      border-radius: 16px;
-      background: #ffe0e7;
-      color: #d32f2f;
-      font-weight: 600;
-      box-shadow: 0 2px 8px #f0981944;
-      letter-spacing: 1px;
-      font-family: 'Fredoka', 'Quicksand', Arial, sans-serif;
-    }
-    .end-message.win {
-      color: #388e3c;
-      background: #eafaf1;
-      box-shadow: 0 2px 8px #388e3c44;
-    }
-    #playAgain {
-      margin: 17px auto 0 auto;
-      display: none;
-    }
-    .guide {
-      margin-top: 28px;
-      padding: 16px 18px 10px 18px;
-      background: #fffbe7;
-      border-radius: 18px;
-      box-shadow: 0 2px 16px #f9d42333;
-      font-family: 'Quicksand', 'Fredoka', Arial, sans-serif;
-      font-size: 1.08em;
-      color: #7c4dff;
-      line-height: 1.7;
-      border: 2px dashed #ffd740;
-      position: relative;
-    }
-    .guide-title {
-      font-size: 1.18em;
-      font-weight: 700;
-      color: #ff4e50;
-      text-align: left;
-      margin-bottom: 8px;
-      letter-spacing: 1px;
-      font-family: 'Fredoka', 'Quicksand', Arial, sans-serif;
-    }
-    @media (max-width: 480px) {
-      .container { max-width: 99vw; padding: 14px 2vw 18px 2vw;}
-      .guess-input { width: 38px; height: 38px; font-size: 1.13em;}
-      .btn { font-size: 1em; padding: 9px 13px;}
-      .result-row { font-size: 1em; padding: 6px 8px;}
-      .end-message { font-size: 1.07em;}
-      .guide { font-size: 0.97em; padding: 12px 6px 6px 6px;}
-      h2 { font-size: 1.6em;}
-      .guess-box { gap: 5px; }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
   <div class="container">
-    <h2>GAME ĐOÁN SỐ</h2>
-    <div class="desc">
-      Đoán số bí mật gồm <span id="numLength"></span> chữ số, các chữ số đều khác nhau và chữ số đầu không phải 0.
+    <!-- Header -->
+    <header class="game-header">
+      <h1><i class="fas fa-gamepad"></i> GAME ĐOÁN SỐ PRO</h1>
+      <div class="game-stats">
+        <div class="stat-box">
+          <span class="stat-label">ĐIỂM</span>
+          <span id="score" class="stat-value">0</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">CẤP ĐỘ</span>
+          <span id="level" class="stat-value">Dễ</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">HIGHSCORE</span>
+          <span id="highscore" class="stat-value">0</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Mode Selection -->
+    <div class="mode-selection">
+      <h2><i class="fas fa-sliders-h"></i> CHỌN CHẾ ĐỘ CHƠI</h2>
+      <div class="mode-buttons">
+        <button class="mode-btn active" data-mode="easy" data-length="5">
+          <i class="fas fa-baby"></i>
+          <span>DỄ (5 số)</span>
+          <small>10 lượt đoán</small>
+        </button>
+        <button class="mode-btn" data-mode="normal" data-length="6">
+          <i class="fas fa-user"></i>
+          <span>THƯỜNG (6 số)</span>
+          <small>12 lượt đoán</small>
+        </button>
+        <button class="mode-btn" data-mode="hard" data-length="7">
+          <i class="fas fa-fire"></i>
+          <span>KHÓ (7 số)</span>
+          <small>15 lượt đoán</small>
+        </button>
+      </div>
     </div>
-    <div class="symbol-explain">
-      <b>Ký hiệu:</b> <br>
-      <span style="color:#388e3c;font-weight:bold;">✓</span> : Đúng số và đúng vị trí &nbsp; &nbsp;
-      <span style="color:#f7b731;font-weight:bold;">○</span> : Đúng số nhưng sai vị trí &nbsp; &nbsp;
-      <span style="color:#d32f2f;font-weight:bold;">✗</span> : Sai hoàn toàn
-    </div>
-    <div id="attemptInfo"></div>
-    <form id="guessForm" autocomplete="off">
-      <div class="guess-box" id="inputs"></div>
-      <button type="submit" class="btn">Đoán!</button>
-    </form>
-    <div id="error"></div>
-    <div class="history" id="history"></div>
-    <div class="end-message" id="endMessage"></div>
-    <button id="playAgain" class="btn">Chơi lại</button>
-    <div class="guide">
-      <div class="guide-title">Hướng dẫn chơi:</div>
-      <ul style="padding-left:18px;margin-top:0;">
-        <li>Số bí mật gồm <b>5 chữ số</b>, các chữ số không trùng nhau và chữ số đầu tiên khác 0.</li>
-        <li>Bạn nhập dự đoán bằng cách điền vào <b>5 ô trống</b> phía trên rồi bấm nút <b>Đoán!</b>.</li>
-        <li>Mỗi lần đoán, kết quả hiển thị bằng ký hiệu:
-          <ul>
-            <li><span style="color:#388e3c;font-weight:bold;">✓</span> : Đúng số và đúng vị trí</li>
-            <li><span style="color:#f7b731;font-weight:bold;">○</span> : Đúng số nhưng sai vị trí</li>
-            <li><span style="color:#d32f2f;font-weight:bold;">✗</span> : Sai hoàn toàn</li>
-          </ul>
-        </li>
-        <li>Bạn có tối đa <b>10 lượt đoán</b>. Nếu đoán đúng số bí mật, bạn thắng!</li>
-        <li>Kết thúc lượt hoặc đoán đúng, nhấn nút <b>Chơi lại</b> để chơi tiếp.</li>
-      </ul>
-      <div style="margin-top:10px; color:#ff4e50; font-weight:500;">
-        Chúc bạn chơi vui và rèn luyện trí tuệ!
+
+    <!-- Game Area -->
+    <main class="game-area">
+      <!-- Game Info -->
+      <div class="game-info">
+        <div class="info-card">
+          <h3><i class="fas fa-info-circle"></i> THÔNG TIN VÁN CHƠI</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="info-label">Độ dài số:</span>
+              <span id="currentLength" class="info-value">5</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Lượt đoán:</span>
+              <span id="attemptInfo" class="info-value">0/10</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Thời gian:</span>
+              <span id="timer" class="info-value">00:00</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Điểm hiện tại:</span>
+              <span id="currentScore" class="info-value">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Symbol Legend -->
+      <div class="symbol-legend">
+        <div class="legend-item correct">
+          <span class="legend-icon"><i class="fas fa-check"></i></span>
+          <span class="legend-text">Đúng số & vị trí</span>
+        </div>
+        <div class="legend-item partial">
+          <span class="legend-icon"><i class="fas fa-exchange-alt"></i></span>
+          <span class="legend-text">Đúng số, sai vị trí</span>
+        </div>
+        <div class="legend-item wrong">
+          <span class="legend-icon"><i class="fas fa-times"></i></span>
+          <span class="legend-text">Sai hoàn toàn</span>
+        </div>
+      </div>
+
+      <!-- Input Form -->
+      <form id="guessForm" autocomplete="off">
+        <div class="guess-inputs" id="inputs"></div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-submit">
+            <i class="fas fa-paper-plane"></i> ĐOÁN NGAY
+          </button>
+          <button type="button" id="hintBtn" class="btn btn-hint">
+            <i class="fas fa-lightbulb"></i> GỢI Ý (3)
+          </button>
+          <button type="button" id="restartBtn" class="btn btn-restart">
+            <i class="fas fa-redo"></i> CHƠI LẠI
+          </button>
+        </div>
+      </form>
+
+      <!-- Error Message -->
+      <div id="error" class="error-message"></div>
+
+      <!-- Game Results -->
+      <div class="game-results">
+        <div id="endMessage" class="end-message"></div>
+        <div id="playAgain" class="play-again-container" style="display: none;">
+          <button id="playAgainBtn" class="btn btn-play-again">
+            <i class="fas fa-play-circle"></i> CHƠI VÁN MỚI
+          </button>
+        </div>
+      </div>
+
+      <!-- History -->
+      <div class="history-section">
+        <h3><i class="fas fa-history"></i> LỊCH SỬ ĐOÁN</h3>
+        <div id="history" class="history-list"></div>
+      </div>
+
+      <!-- Leaderboard -->
+      <div class="leaderboard-section">
+        <h3><i class="fas fa-trophy"></i> BẢNG XẾP HẠNG</h3>
+        <div class="leaderboard-tabs">
+          <button class="tab-btn active" data-tab="easy">Dễ</button>
+          <button class="tab-btn" data-tab="normal">Thường</button>
+          <button class="tab-btn" data-tab="hard">Khó</button>
+        </div>
+        <div id="leaderboard" class="leaderboard-list">
+          <div class="leaderboard-placeholder">
+            <i class="fas fa-chart-line"></i>
+            <p>Chưa có dữ liệu xếp hạng</p>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- How to Play -->
+    <div class="how-to-play">
+      <h3><i class="fas fa-graduation-cap"></i> HƯỚNG DẪN CHƠI</h3>
+      <div class="instructions">
+        <div class="instruction-step">
+          <span class="step-number">1</span>
+          <p>Chọn chế độ chơi: <strong>Dễ (5 số)</strong>, <strong>Thường (6 số)</strong> hoặc <strong>Khó (7 số)</strong></p>
+        </div>
+        <div class="instruction-step">
+          <span class="step-number">2</span>
+          <p>Nhập dự đoán vào các ô và bấm <strong>ĐOÁN NGAY</strong></p>
+        </div>
+        <div class="instruction-step">
+          <span class="step-number">3</span>
+          <p>Dựa vào ký hiệu để suy luận số bí mật</p>
+        </div>
+        <div class="instruction-step">
+          <span class="step-number">4</span>
+          <p>Cố gắng đoán đúng trong số lượt cho phép để được điểm cao</p>
+        </div>
+        <div class="instruction-step">
+          <span class="step-number">5</span>
+          <p>Điểm được tính dựa trên độ khó, thời gian và số lượt đoán</p>
+        </div>
       </div>
     </div>
   </div>
-  <script>
-    // Game config
-    const numLength = 5;
-    const maxAttempts = 10;
-    let secretNumber = [];
-    let attempts = 0;
-    let history = [];
 
-    document.getElementById('numLength').textContent = numLength;
-
-    function generateSecretNumber() {
-      let digits = [1,2,3,4,5,6,7,8,9];
-      let first = digits[Math.floor(Math.random() * digits.length)];
-      secretNumber = [first];
-      digits = [0,1,2,3,4,5,6,7,8,9].filter(d => d !== first);
-      while (secretNumber.length < numLength) {
-        let idx = Math.floor(Math.random() * digits.length);
-        let digit = digits.splice(idx, 1)[0];
-        secretNumber.push(digit);
-      }
-    }
-
-    function checkGuess(guess) {
-      let result = Array(numLength).fill(0);
-      for (let i = 0; i < numLength; i++) {
-        if (guess[i] === secretNumber[i]) {
-          result[i] = 2;
-        } else if (secretNumber.includes(guess[i])) {
-          result[i] = 1;
-        }
-      }
-      return result;
-    }
-
-    function isCorrect(result) {
-      return result.every(r => r === 2);
-    }
-
-    function displayHistory() {
-      let html = '';
-      for (let entry of history) {
-        html += '<div class="result-row">';
-        html += entry.guess.map(d => `<span>${d}</span>`).join(' ');
-        html += ' &nbsp; ';
-        html += entry.result.map(res => {
-          if (res === 2) return '<span class="symbol" style="color:#388e3c;">✓</span>';
-          if (res === 1) return '<span class="symbol" style="color:#f7b731;">○</span>';
-          return '<span class="symbol" style="color:#d32f2f;">✗</span>';
-        }).join(' ');
-        html += '</div>';
-      }
-      document.getElementById('history').innerHTML = html;
-    }
-
-    function showEndMessage(win) {
-      const endMsg = document.getElementById('endMessage');
-      if (win) {
-        endMsg.innerHTML = `<span class="win">🎉 CHÚC MỪNG! Bạn đã đoán đúng số sau ${attempts} lần thử!</span>`;
-        endMsg.classList.add('win');
-      } else {
-        endMsg.innerHTML = `💀 GAME OVER! Bạn đã hết lượt đoán.<br>Số bí mật là: <b>${secretNumber.join(' ')}</b>`;
-        endMsg.classList.remove('win');
-      }
-      document.getElementById('playAgain').style.display = 'block';
-    }
-
-    function resetGame() {
-      generateSecretNumber();
-      attempts = 0;
-      history = [];
-      document.getElementById('history').innerHTML = '';
-      document.getElementById('endMessage').innerHTML = '';
-      document.getElementById('endMessage').classList.remove('win');
-      document.getElementById('playAgain').style.display = 'none';
-      document.getElementById('error').textContent = '';
-      displayInputs();
-      updateAttemptInfo();
-      document.getElementById('guessForm').style.display = '';
-    }
-
-    function displayInputs() {
-      let html = '';
-      for (let i = 0; i < numLength; i++) {
-        html += `<input type="number" min="0" max="9" maxlength="1" class="guess-input" required>`;
-      }
-      document.getElementById('inputs').innerHTML = html;
-    }
-
-    function updateAttemptInfo() {
-      document.getElementById('attemptInfo').textContent = `Lần đoán thứ ${attempts + 1}/${maxAttempts}`;
-    }
-
-    // Event listeners
-    document.getElementById('guessForm').onsubmit = function(e) {
-      e.preventDefault();
-      document.getElementById('error').textContent = '';
-      let inputs = Array.from(document.querySelectorAll('.guess-input'));
-      let guess = inputs.map(inp => Number(inp.value));
-      // Validation
-      if (guess.length !== numLength || guess.some(isNaN)) {
-        document.getElementById('error').textContent = `Vui lòng nhập đủ ${numLength} chữ số!`;
-        return;
-      }
-      if (guess[0] === 0) {
-        document.getElementById('error').textContent = 'Chữ số đầu tiên phải khác 0!';
-        return;
-      }
-      let set = new Set(guess);
-      if (set.size !== numLength) {
-        document.getElementById('error').textContent = 'Không được nhập các chữ số trùng nhau!';
-        return;
-      }
-      if (guess.some(d => d < 0 || d > 9)) {
-        document.getElementById('error').textContent = 'Chỉ được nhập các số từ 0-9!';
-        return;
-      }
-      // Play
-      let result = checkGuess(guess);
-      attempts++;
-      history.push({guess, result});
-      displayHistory();
-      updateAttemptInfo();
-      if (isCorrect(result)) {
-        showEndMessage(true);
-        document.getElementById('guessForm').style.display = 'none';
-      } else if (attempts >= maxAttempts) {
-        showEndMessage(false);
-        document.getElementById('guessForm').style.display = 'none';
-      } else {
-        inputs.forEach(inp => inp.value = '');
-        inputs[0].focus();
-      }
-    };
-
-    document.getElementById('playAgain').onclick = resetGame;
-
-    // Khởi động game lần đầu
-    resetGame();
-  </script>
+  <script src="game.js"></script>
 </body>
 </html>
